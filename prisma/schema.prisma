@@ -12,3 +12,19 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id       String  @id @default(uuid())
+  name     String
+  userName String
+  Music    Music[]
+}
+
+model Music {
+  id        String   @id @default(uuid())
+  title     String
+  url       String
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+}
