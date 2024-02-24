@@ -1,21 +1,22 @@
 "use server";
 import { db } from "@/app/_lib/prisma";
-import { uploadFileToS3 } from "../../_lib/s3-configuration";
+import { uploadFileToS3, uploadImageToS3 } from "../../_lib/s3-configuration";
 interface AddSongProps {
   file: {
     title: string;
     author?: string;
     song: {
-      name: string;
-      type: string;
-      size: number;
-    };
+        name:string,
+        type:string,
+        size:number,
+      },
   };
   songFile: any;
+  songImage: any;
   userId: string;
 }
 
-export const AddSong = async ({ file, userId, songFile }: AddSongProps) => {
+export const AddSong = async ({ file, userId, songFile, songImage }: AddSongProps) => {
   const existingSongName = await db.music.findFirst({
     where: {
       title: file.title,
@@ -32,12 +33,20 @@ export const AddSong = async ({ file, userId, songFile }: AddSongProps) => {
       title: file.title,
     });
 
+    const fileImageUrl = await uploadImageToS3({
+      data: songImage,
+      title: file.title,
+    })
+
+    console.log(fileImageUrl)
+
     await db.music.create({
       data: {
         title: file.title,
         url: fileUrl,
         userId: userId,
         author: file.author ?? "",
+        imageUrl: fileImageUrl,
       },
     });
   } catch (err) {

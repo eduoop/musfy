@@ -31,6 +31,7 @@ model Music {
   url       String
   createdAt DateTime @default(now())
   userId    String
+  imageUrl  String
   user      User     @relation(fields: [userId], references: [id])
 }
 

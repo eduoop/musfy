@@ -56,6 +56,7 @@ const AddSongForm = ({ defaultValues }: FormProps) => {
   const [loadingSave, setLoadingSave] = useState(false);
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const [selectedImage, setSelectedImage] = useState<any>(null);
+  const [selectedImageFormatted, setSelectedImageFormatted] = useState<any>(null);
   const { data } = useSession();
   const { toast } = useToast();
   const router = useRouter();
@@ -66,12 +67,20 @@ const AddSongForm = ({ defaultValues }: FormProps) => {
   });
 
   const handleSubmit = async (formData: z.infer<typeof songSchema>) => {
+    if (!selectedImage) {
+      toast({
+        title: "Selecione uma capa para a musica",
+        action: <ToastAction altText="Fechar">Fechar</ToastAction>,
+      });
+    }
+    
     if (!selectedFile) {
       toast({
         title: "Selecione um arquivo de música",
         action: <ToastAction altText="Fechar">Fechar</ToastAction>,
       });
     }
+   
     if (data) {
       setLoadingSave(true);
       try {
@@ -79,6 +88,7 @@ const AddSongForm = ({ defaultValues }: FormProps) => {
           file: formData,
           userId: (data.user as any).id,
           songFile: selectedFile,
+          songImage: selectedImageFormatted
         });
         toast({
           title: "Musica adicionada com sucesso!",
@@ -128,8 +138,37 @@ const AddSongForm = ({ defaultValues }: FormProps) => {
     }
   };
 
+  const convertImageToBuffer = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        let fileData: Uint8Array;
+        if ((reader.result as ArrayBuffer).byteLength !== 0) {
+          fileData = new Uint8Array(reader.result as ArrayBuffer);
+        } else {
+          throw new Error("Failed to read the file as an ArrayBuffer");
+        }
+
+        const buffer = Buffer.from(fileData);
+        const base64Data = buffer.toString("base64");
+
+        const fileObject = {
+          name: file.name,
+          type: file.type,
+          size: file.size,
+          data: base64Data,
+        };
+
+        setSelectedImageFormatted(fileObject);
+      };
+
+      reader.readAsArrayBuffer(file);
+    }
+  };
+
   function convertImageToUrl(file: any) {
-    console.log(file);
     if (!file) {
       return (
         <AvatarFallback>
@@ -142,6 +181,8 @@ const AddSongForm = ({ defaultValues }: FormProps) => {
 
     return <AvatarImage src={URL.createObjectURL(blob)} alt={file.name} />;
   }
+
+  console.log(selectedImageFormatted)
 
   return (
     <div className="flex items-center gap-2 px-5">
@@ -156,7 +197,7 @@ const AddSongForm = ({ defaultValues }: FormProps) => {
             accept="image/*"
             className="hidden"
             onChange={async (e) => {
-              handleFileChange(e);
+              convertImageToBuffer(e);
               if (e.target.files && e.target.files.length > 0) {
                 setSelectedImage(e.target.files[0]);
               }
