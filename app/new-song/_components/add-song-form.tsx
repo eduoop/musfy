@@ -12,7 +12,13 @@ import {
   FormMessage,
 } from "../../_components/ui/form";
 import { Button } from "@/app/_components/ui/button";
-import { Loader2, SaveIcon } from "lucide-react";
+import {
+  CameraIcon,
+  GalleryVerticalIcon,
+  Loader2,
+  SaveIcon,
+  User2Icon,
+} from "lucide-react";
 import { Input } from "@/app/_components/ui/input";
 import { Card } from "@/app/_components/ui/card";
 import { AddSong } from "../_actions/add-song";
@@ -20,6 +26,11 @@ import { useSession } from "next-auth/react";
 import { toast, useToast } from "@/app/_components/ui/use-toast";
 import { ToastAction } from "@/app/_components/ui/toast";
 import { useRouter } from "next/navigation";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/app/_components/ui/avatar";
 
 export const songSchema = z.object({
   title: z
@@ -27,6 +38,7 @@ export const songSchema = z.object({
     .min(1, "Campo obrigatório.")
     .trim(),
   author: z.string().optional(),
+  image: z.instanceof(FileList).transform((list) => list.item(0)),
   song: z.object(
     {
       name: z.string(),
@@ -36,6 +48,11 @@ export const songSchema = z.object({
     { required_error: "Selecione um arquivo" }
   ),
 });
+
+interface ImageVerificationResult {
+  hasImage: boolean;
+  imageUrl: string | null;
+}
 
 interface FormProps {
   defaultValues: z.infer<typeof songSchema>;
@@ -54,6 +71,7 @@ const AddSongForm = ({ defaultValues }: FormProps) => {
   });
 
   const handleSubmit = async (formData: z.infer<typeof songSchema>) => {
+    console.log(formData.image);
     if (!selectedFile) {
       toast({
         title: "Selecione um arquivo de música",
@@ -63,17 +81,15 @@ const AddSongForm = ({ defaultValues }: FormProps) => {
     if (data) {
       setLoadingSave(true);
       try {
-        await AddSong({
-          file: formData,
-          userId: (data.user as any).id,
-          songFile: selectedFile,
-        });
-
-        toast({
-          title: "Musica adicionada com sucesso!",
-        });
-
-        router.push("/");
+          await AddSong({
+            file: formData,
+            userId: (data.user as any).id,
+            songFile: selectedFile,
+          });
+          toast({
+            title: "Musica adicionada com sucesso!",
+          });
+          router.push("/");
       } catch (err) {
         const error = err as Error;
 
@@ -118,7 +134,25 @@ const AddSongForm = ({ defaultValues }: FormProps) => {
     }
   };
 
-  console.log(loadingSave);
+  function convertImageToUrl(fileList: any) {
+    const file = fileList?.[0];
+    if (!file) {
+      return (
+        <AvatarFallback>
+          <CameraIcon size={35} />
+        </AvatarFallback>
+      );
+    }
+  
+    const blob = new Blob([file], { type: file.type });
+  
+    return (
+      <AvatarImage
+        src={URL.createObjectURL(blob)}
+        alt={file.name}
+      />
+    );
+  }
 
   return (
     <div className="flex items-center gap-2 px-5">
@@ -127,6 +161,32 @@ const AddSongForm = ({ defaultValues }: FormProps) => {
           className="w-full flex flex-col gap-4"
           onSubmit={form.handleSubmit(handleSubmit)}
         >
+          <Controller
+            name="image"
+            control={form.control}
+            render={({ field }) => (
+              <>
+                <input
+                  type="file"
+                  id="songImage"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={async (e) => {
+                    handleFileChange(e);
+                    if (e.target.files && e.target.files.length > 0) {
+                      await field.onChange(e.target.files);
+                    }
+                  }}
+                />
+
+                <Avatar asChild className="w-28 h-28 cursor-pointer">
+                  <label htmlFor="songImage">
+                    {convertImageToUrl(field.value)}
+                  </label>
+                </Avatar>
+              </>
+            )}
+          />
           <FormField
             control={form.control}
             name="title"
