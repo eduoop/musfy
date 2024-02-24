@@ -45,8 +45,8 @@ const AddSongForm = ({ defaultValues }: FormProps) => {
   const [loadingSave, setLoadingSave] = useState(false);
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const { data } = useSession();
-  const { toast } = useToast()
-  const router = useRouter()
+  const { toast } = useToast();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof songSchema>>({
     resolver: zodResolver(songSchema),
@@ -54,11 +54,11 @@ const AddSongForm = ({ defaultValues }: FormProps) => {
   });
 
   const handleSubmit = async (formData: z.infer<typeof songSchema>) => {
-    if(!selectedFile) {
+    if (!selectedFile) {
       toast({
         title: "Selecione um arquivo de música",
         action: <ToastAction altText="Fechar">Fechar</ToastAction>,
-      })
+      });
     }
     if (data) {
       setLoadingSave(true);
@@ -70,12 +70,18 @@ const AddSongForm = ({ defaultValues }: FormProps) => {
         });
 
         toast({
-          title: 'Musica adicionada com sucesso!'
-        })
-        
-        router.push('/')
+          title: "Musica adicionada com sucesso!",
+        });
+
+        router.push("/");
       } catch (err) {
-        console.log(err);
+        const error = err as Error;
+
+        if (error.message.includes("Music name already exists")) {
+          toast({
+            title: "Erro: Música com mesmo nome já existe.",
+          });
+        }
       } finally {
         setLoadingSave(false);
       }
@@ -85,7 +91,7 @@ const AddSongForm = ({ defaultValues }: FormProps) => {
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
-  
+
       const reader = new FileReader();
       reader.onload = () => {
         let fileData: Uint8Array;
@@ -94,25 +100,25 @@ const AddSongForm = ({ defaultValues }: FormProps) => {
         } else {
           throw new Error("Failed to read the file as an ArrayBuffer");
         }
-  
+
         const buffer = Buffer.from(fileData);
-        const base64Data = buffer.toString('base64');
-  
+        const base64Data = buffer.toString("base64");
+
         const fileObject = {
           name: file.name,
           type: file.type,
           size: file.size,
           data: base64Data,
         };
-  
+
         setSelectedFile(fileObject);
       };
-  
+
       reader.readAsArrayBuffer(file);
     }
   };
 
-  console.log(loadingSave)
+  console.log(loadingSave);
 
   return (
     <div className="flex items-center gap-2 px-5">
@@ -179,7 +185,12 @@ const AddSongForm = ({ defaultValues }: FormProps) => {
             </label>
           </Button>
 
-          <Button disabled={loadingSave} variant={"default"} type="submit" className="gap-3">
+          <Button
+            disabled={loadingSave}
+            variant={"default"}
+            type="submit"
+            className="gap-3"
+          >
             {loadingSave ? (
               <>
                 <Loader2 size={20} className="animate-spin" />
