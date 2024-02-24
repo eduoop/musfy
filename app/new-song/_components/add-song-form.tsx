@@ -38,7 +38,6 @@ export const songSchema = z.object({
     .min(1, "Campo obrigatório.")
     .trim(),
   author: z.string().optional(),
-  image: z.instanceof(FileList).transform((list) => list.item(0)),
   song: z.object(
     {
       name: z.string(),
@@ -56,6 +55,7 @@ interface FormProps {
 const AddSongForm = ({ defaultValues }: FormProps) => {
   const [loadingSave, setLoadingSave] = useState(false);
   const [selectedFile, setSelectedFile] = useState<any>(null);
+  const [selectedImage, setSelectedImage] = useState<any>(null);
   const { data } = useSession();
   const { toast } = useToast();
   const router = useRouter();
@@ -66,7 +66,6 @@ const AddSongForm = ({ defaultValues }: FormProps) => {
   });
 
   const handleSubmit = async (formData: z.infer<typeof songSchema>) => {
-    console.log(formData.image);
     if (!selectedFile) {
       toast({
         title: "Selecione um arquivo de música",
@@ -76,15 +75,15 @@ const AddSongForm = ({ defaultValues }: FormProps) => {
     if (data) {
       setLoadingSave(true);
       try {
-          await AddSong({
-            file: formData,
-            userId: (data.user as any).id,
-            songFile: selectedFile,
-          });
-          toast({
-            title: "Musica adicionada com sucesso!",
-          });
-          router.push("/");
+        await AddSong({
+          file: formData,
+          userId: (data.user as any).id,
+          songFile: selectedFile,
+        });
+        toast({
+          title: "Musica adicionada com sucesso!",
+        });
+        router.push("/");
       } catch (err) {
         const error = err as Error;
 
@@ -129,8 +128,8 @@ const AddSongForm = ({ defaultValues }: FormProps) => {
     }
   };
 
-  function convertImageToUrl(fileList: any) {
-    const file = fileList?.[0];
+  function convertImageToUrl(file: any) {
+    console.log(file);
     if (!file) {
       return (
         <AvatarFallback>
@@ -138,15 +137,10 @@ const AddSongForm = ({ defaultValues }: FormProps) => {
         </AvatarFallback>
       );
     }
-  
+
     const blob = new Blob([file], { type: file.type });
-  
-    return (
-      <AvatarImage
-        src={URL.createObjectURL(blob)}
-        alt={file.name}
-      />
-    );
+
+    return <AvatarImage src={URL.createObjectURL(blob)} alt={file.name} />;
   }
 
   return (
@@ -156,32 +150,25 @@ const AddSongForm = ({ defaultValues }: FormProps) => {
           className="w-full flex flex-col gap-4"
           onSubmit={form.handleSubmit(handleSubmit)}
         >
-          <Controller
-            name="image"
-            control={form.control}
-            render={({ field }) => (
-              <>
-                <input
-                  type="file"
-                  id="songImage"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={async (e) => {
-                    handleFileChange(e);
-                    if (e.target.files && e.target.files.length > 0) {
-                      await field.onChange(e.target.files);
-                    }
-                  }}
-                />
-
-                <Avatar asChild className="w-28 h-28 cursor-pointer">
-                  <label htmlFor="songImage">
-                    {convertImageToUrl(field.value)}
-                  </label>
-                </Avatar>
-              </>
-            )}
+          <input
+            type="file"
+            id="songImage"
+            accept="image/*"
+            className="hidden"
+            onChange={async (e) => {
+              handleFileChange(e);
+              if (e.target.files && e.target.files.length > 0) {
+                setSelectedImage(e.target.files[0]);
+              }
+            }}
           />
+
+          <Avatar asChild className="w-28 h-28 cursor-pointer">
+            <label htmlFor="songImage">
+              {convertImageToUrl(selectedImage)}
+            </label>
+          </Avatar>
+
           <FormField
             control={form.control}
             name="title"
