@@ -14,7 +14,7 @@ const uploadFileToS3 = async (file: any) => {
   const fileExtension = getFileExtension(file.data.name);
   const keyWithPath = `sounds/${encodeURIComponent(file.title)}.${fileExtension}`;
 
-  const buffer = Buffer.from(file.data.data);
+  const buffer = Buffer.from(file.data.data, 'base64'); // Decodifique a string base64 em um buffer
   const dataArray = new Uint8Array(buffer);
 
   const putParams = {

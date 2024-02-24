@@ -87,11 +87,14 @@ const AddSongForm = ({ defaultValues }: FormProps) => {
           throw new Error("Failed to read the file as an ArrayBuffer");
         }
   
+        const buffer = Buffer.from(fileData);
+        const base64Data = buffer.toString('base64');
+  
         const fileObject = {
           name: file.name,
           type: file.type,
           size: file.size,
-          data: Buffer.from(fileData),
+          data: base64Data,
         };
   
         setSelectedFile(fileObject);
