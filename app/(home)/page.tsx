@@ -9,7 +9,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
-      <Header />
 
       <div className="px-5 my-6">
         <Search />
