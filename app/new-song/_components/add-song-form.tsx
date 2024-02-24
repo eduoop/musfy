@@ -19,6 +19,7 @@ import { AddSong } from "../_actions/add-song";
 import { useSession } from "next-auth/react";
 import { toast, useToast } from "@/app/_components/ui/use-toast";
 import { ToastAction } from "@/app/_components/ui/toast";
+import { useRouter } from "next/navigation";
 
 export const songSchema = z.object({
   title: z
@@ -45,13 +46,14 @@ const AddSongForm = ({ defaultValues }: FormProps) => {
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const { data } = useSession();
   const { toast } = useToast()
+  const router = useRouter()
 
   const form = useForm<z.infer<typeof songSchema>>({
     resolver: zodResolver(songSchema),
     defaultValues: defaultValues,
   });
 
-  const handleSubmit = (formData: z.infer<typeof songSchema>) => {
+  const handleSubmit = async (formData: z.infer<typeof songSchema>) => {
     if(!selectedFile) {
       toast({
         title: "Selecione um arquivo de música",
@@ -61,11 +63,17 @@ const AddSongForm = ({ defaultValues }: FormProps) => {
     if (data) {
       setLoadingSave(true);
       try {
-        AddSong({
+        await AddSong({
           file: formData,
           userId: (data.user as any).id,
           songFile: selectedFile,
         });
+
+        toast({
+          title: 'Musica adicionada com sucesso!'
+        })
+        
+        router.push('/')
       } catch (err) {
         console.log(err);
       } finally {

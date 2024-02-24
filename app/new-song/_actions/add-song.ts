@@ -22,16 +22,14 @@ export const AddSong = async ({ file, userId, songFile}: AddSongProps) => {
         title: file.title
       });
 
-      return fileUrl
-
-      // await db.music.create({
-      //   data: {
-      //     title: file.title,
-      //     url: fileUrl,
-      //     userId: userId,
-      //     author: file.author ?? ""
-      //   }
-      // })
+      await db.music.create({
+        data: {
+          title: file.title,
+          url: fileUrl,
+          userId: userId,
+          author: file.author ?? ""
+        }
+      })
     } catch(err) {
       console.error('Erro ao enviar arquivo para a Amazon S3:', err);
     }
