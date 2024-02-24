@@ -49,11 +49,6 @@ export const songSchema = z.object({
   ),
 });
 
-interface ImageVerificationResult {
-  hasImage: boolean;
-  imageUrl: string | null;
-}
-
 interface FormProps {
   defaultValues: z.infer<typeof songSchema>;
 }
