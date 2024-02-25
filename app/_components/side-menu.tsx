@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React from "react";
 import {
@@ -18,7 +18,7 @@ import Link from "next/link";
 import { signIn, useSession, signOut } from "next-auth/react";
 
 interface SideMenuProps {
-  setSheetIsOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setSheetIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const SideMenu = ({ setSheetIsOpen }: SideMenuProps) => {
@@ -71,19 +71,45 @@ const SideMenu = ({ setSheetIsOpen }: SideMenuProps) => {
         )}
 
         <div className="flex flex-col gap-3 px-5">
-          <Button onClick={() => setSheetIsOpen(false)} asChild variant={"outline"} className="justify-start">
+          <Button
+            onClick={() => setSheetIsOpen(false)}
+            asChild
+            variant={"outline"}
+            className="justify-start"
+          >
             <Link href="/">
               <HomeIcon size={18} className="mr-2" />
               Início
             </Link>
           </Button>
 
-          <Button onClick={() => setSheetIsOpen(false)} asChild variant={"outline"} className="justify-start">
-            <Link href="/new-song">
-              <PlusIcon size={18} className="mr-2" />
-              Nova Música
-            </Link>
-          </Button>
+          {data && data.user && (
+            <Button
+              onClick={() => setSheetIsOpen(false)}
+              asChild
+              variant={"outline"}
+              className="justify-start"
+            >
+              <Link href={`/user/${(data.user as any).id}`}>
+                <UserIcon size={18} className="mr-2" />
+                Meu perfil
+              </Link>
+            </Button>
+          )}
+
+          {data && data.user && (
+            <Button
+              onClick={() => setSheetIsOpen(false)}
+              asChild
+              variant={"outline"}
+              className="justify-start"
+            >
+              <Link href="/new-song">
+                <PlusIcon size={18} className="mr-2" />
+                Nova Música
+              </Link>
+            </Button>
+          )}
         </div>
       </SheetContent>
     </>
