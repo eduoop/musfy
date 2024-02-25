@@ -4,6 +4,7 @@ import "./globals.css";
 import AuthProvider from "./_providers/auth";
 import Header from "./_components/header";
 import { Toaster } from "./_components/ui/toaster";
+import { CurrentSoundContextProvider } from "./_contexts/CurrentSoundContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,11 +22,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} dark`}>
         <AuthProvider>
-          <>
+          <CurrentSoundContextProvider>
             <Header />
             {children}
             <Toaster />
-          </>
+          </CurrentSoundContextProvider>
         </AuthProvider>
       </body>
     </html>
