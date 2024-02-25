@@ -11,7 +11,7 @@ const s3Client = new S3Client({
 
 const uploadFileToS3 = async (file: any) => {
   const fileExtension = getFileExtension(file.data.name);
-  const keyWithPath = `sounds/${encodeURIComponent(file.title)}.${fileExtension}`;
+  const keyWithPath = `sounds/${file.title}.${fileExtension}`;
 
   const buffer = Buffer.from(file.data.data, 'base64'); // Decodifique a string base64 em um buffer
   const dataArray = new Uint8Array(buffer);
@@ -28,7 +28,7 @@ const uploadFileToS3 = async (file: any) => {
     await s3Client.send(command);
 
     // Construa a URL do objeto enviado
-    const objectUrl = `https://${putParams.Bucket}.s3.sa-east-1.amazonaws.com/${keyWithPath}`;
+    const objectUrl = `https://${putParams.Bucket}.s3.sa-east-1.amazonaws.com/${encodeURIComponent(keyWithPath)}`;
     
     console.log("Arquivo enviado com sucesso:", objectUrl);
     return objectUrl;
