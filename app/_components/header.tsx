@@ -1,20 +1,18 @@
 "use client";
 
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Card, CardContent } from "./ui/card";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import { MenuIcon } from "lucide-react";
 import { signIn } from "next-auth/react";
-import {
-  Sheet,
-  SheetTrigger,
-} from "./ui/sheet";
+import { Sheet, SheetTrigger } from "./ui/sheet";
 import SideMenu from "./side-menu";
 import Link from "next/link";
+import useCurrentSoundUrl from "../_hooks/useCurrentSoundUrl";
+import MusicPlayer from "./player";
 
 const Header = () => {
-
   const [sheetIsOpen, setSheetIsOpen] = useState(false);
 
   return (
@@ -24,6 +22,9 @@ const Header = () => {
           <Link href="/">
             <Image src="/logo.png" alt="Musfy" height={65} width={65} />
           </Link>
+         
+         <MusicPlayer/>
+
           <Sheet open={sheetIsOpen} onOpenChange={setSheetIsOpen}>
             <SheetTrigger asChild>
               <Button variant={"outline"} size={"icon"} className="h-9 w-9">
@@ -31,7 +32,7 @@ const Header = () => {
               </Button>
             </SheetTrigger>
 
-            <SideMenu setSheetIsOpen={setSheetIsOpen}/>
+            <SideMenu setSheetIsOpen={setSheetIsOpen} />
           </Sheet>
         </CardContent>
       </Card>

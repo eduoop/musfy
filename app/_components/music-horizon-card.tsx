@@ -1,9 +1,13 @@
+"use client";
+
 import Image from "next/image";
 import React from "react";
 import { Card, CardContent } from "./ui/card";
 import { Music, Prisma } from "@prisma/client";
 import { Button } from "./ui/button";
-import { PlayIcon } from "lucide-react";
+import { PauseIcon, PlayIcon } from "lucide-react";
+import { useGlobalCurrentSoundContext } from "../_contexts/CurrentSoundContext";
+import useCurrentSoundUrl from "../_hooks/useCurrentSoundUrl";
 
 interface MusicHorizonCardProps {
   music: Prisma.MusicGetPayload<{
@@ -14,8 +18,23 @@ interface MusicHorizonCardProps {
 }
 
 const MusicHorizonCard = ({ music }: MusicHorizonCardProps) => {
+  const { isCurrentSong, isCurrentSongAndIsPlaying, updateCurrentSoundUrl } = useCurrentSoundUrl();
+  const { toggleIsPlaying } = useGlobalCurrentSoundContext();
+
+  const handleNewSong = () => {
+    updateCurrentSoundUrl(music.url);
+  };
+
+  const handlePlayClick = () => {
+    if(!isCurrentSong(music.url)){
+      updateCurrentSoundUrl(music.url);
+    }
+
+    toggleIsPlaying(music.url);
+  }
+
   return (
-    <Card className="w-full flex items-center justify-between cursor-pointer rounded-tl-2xl rounded-bl-2xl duration-300">
+    <Card onClick={handleNewSong} className="w-full flex items-center justify-between cursor-pointer rounded-tl-2xl rounded-bl-2xl duration-300 hover:bg-secondary">
       <CardContent className="flex items-center justify-between p-0 w-full">
         <div className="flex items-center gap-2">
           <div className="relative h-[70px] w-[70px]">
@@ -42,9 +61,15 @@ const MusicHorizonCard = ({ music }: MusicHorizonCardProps) => {
         </div>
 
         <div className="pr-4 flex items-center">
-          <Button variant={"secondary"}>
-            <PlayIcon />
-          </Button>
+          {isCurrentSongAndIsPlaying(music.url) ? (
+              <Button onClick={handlePlayClick} variant={"secondary"}>
+                <PauseIcon className="fill-white" size={19} />
+              </Button>
+            ) : (
+              <Button onClick={() => toggleIsPlaying(music.url)} variant={"secondary"}>
+                <PlayIcon className="fill-white" size={19} />
+              </Button>
+            )}
         </div>
       </CardContent>
     </Card>
