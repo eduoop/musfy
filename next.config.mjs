@@ -3,7 +3,8 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        hostname: "www.creativefabrica.com",
+        protocol: "https",
+        hostname: "**",
       },
     ],
   },

@@ -1,6 +1,7 @@
 "use server";
 import { db } from "@/app/_lib/prisma";
 import { uploadFileToS3, uploadImageToS3 } from "../../_lib/s3-configuration";
+import { revalidatePath } from "next/cache";
 interface AddSongProps {
   file: {
     title: string;
@@ -49,6 +50,9 @@ export const AddSong = async ({ file, userId, songFile, songImage }: AddSongProp
         imageUrl: fileImageUrl,
       },
     });
+
+    revalidatePath("/")
+
   } catch (err) {
     console.error("Erro ao enviar arquivo para a Amazon S3:", err);
   }

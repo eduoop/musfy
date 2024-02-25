@@ -62,7 +62,7 @@ const deleteFileFromS3 = async (fileName: string) => {
 
 async function uploadImageToS3(file: any) {
   const fileExtension = getFileExtension(file.data.name);
-  const keyWithPath = `soundImages/${encodeURIComponent(file.title)}.${fileExtension}`;
+  const keyWithPath = `soundImages/${file.title}.${fileExtension}`;
 
   const buffer = Buffer.from(file.data.data, 'base64'); // Decodifique a string base64 em um buffer
   const dataArray = new Uint8Array(buffer);

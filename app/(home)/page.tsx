@@ -3,13 +3,35 @@ import Header from "../_components/header";
 import Search from "./_components/search";
 import MusicCard from "../_components/music-card";
 import MusicHorizonCard from "../_components/music-horizon-card";
+import { db } from "../_lib/prisma";
 
-export default function Home() {
-  const musics = [1, 2, 3, 4, 5, 5, 6, 7];
+export default async function Home() {
+  const [recentSounds, discoverSounds] = await Promise.all([
+    db.music.findMany({
+      where: {
+        createdAt: {
+          lte: new Date(),
+        },
+      },
+      include: {
+        user: true
+      }
+    }),
+
+    db.music.findMany({
+      where: {
+        createdAt: {
+          lte: new Date(),
+        },
+      },
+      include: {
+        user: true
+      }
+    }),
+  ]);
 
   return (
     <div className="min-h-screen">
-
       <div className="px-5 my-6">
         <Search />
       </div>
@@ -17,8 +39,8 @@ export default function Home() {
       <h1 className="px-5 mb-3 text-xl font-semibold">Descobrir</h1>
 
       <div className="px-5 flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-        {musics.map((number) => (
-          <MusicCard key={number} />
+        {discoverSounds.map((music) => (
+          <MusicCard music={music} key={music.id} />
         ))}
       </div>
 
@@ -27,9 +49,9 @@ export default function Home() {
       </h1>
 
       <div className="px-5 flex flex-col gap-3">
-       {musics.map((number) => (
-         <MusicHorizonCard key={number} />
-       ))}
+        {recentSounds.map((music) => (
+          <MusicHorizonCard key={music.id} music={music} />
+        ))}
       </div>
     </div>
   );

@@ -101,6 +101,10 @@ const AddSongForm = ({ defaultValues }: FormProps) => {
           toast({
             title: "Erro: Música com mesmo nome já existe.",
           });
+        } else {
+          toast({
+            title: "Não foi possível adicionar",
+          });
         }
       } finally {
         setLoadingSave(false);
@@ -181,8 +185,6 @@ const AddSongForm = ({ defaultValues }: FormProps) => {
 
     return <AvatarImage src={URL.createObjectURL(blob)} alt={file.name} />;
   }
-
-  console.log(selectedImageFormatted)
 
   return (
     <div className="flex items-center gap-2 px-5">

@@ -3,14 +3,23 @@ import { Card } from "./ui/card";
 import Image from "next/image";
 import { PlayIcon } from "lucide-react";
 import { Button } from "./ui/button";
+import { Music, Prisma } from "@prisma/client";
 
-const MusicCard = () => {
+interface MusicCardProps {
+  music: Prisma.MusicGetPayload<{
+    include: {
+      user: true;
+    };
+  }>;
+}
+
+const MusicCard = ({ music }: MusicCardProps) => {
   return (
     <div className="flex flex-col w-[130px]">
       <div className="relative w-full h-[140px]">
         <Image
           alt="Barber image"
-          src={"/sky.jpg"}
+          src={music.imageUrl}
           fill
           sizes="100vw"
           className="rounded-2xl"
@@ -26,9 +35,9 @@ const MusicCard = () => {
 
       <div className="flex flex-col gap-1 mt-2">
         <h1 className="leading-[19px] font-semibold overflow-hidden text-ellipsis text-nowrap">
-          Clear mind with big name
+          {music.title}
         </h1>
-        <small className="leading-[12px]">Instrumental</small>
+        <small className="leading-[12px]">{music.author ? music.author : music.user.name}</small>
       </div>
     </div>
   );
