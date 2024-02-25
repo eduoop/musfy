@@ -44,3 +44,40 @@
     @apply bg-background text-foreground antialiased h-screen flex flex-col;
   } 
 }
+
+/* player style */
+
+.rhap_play-pause-button {
+  width: 30px;
+  height: 30px;
+}
+
+.rhap_container {
+  background-color: black;
+}
+
+.rhap_time {
+  color: white;
+  font-size: 13px;
+}
+
+.rhap_progress-bar {
+  background-color: #4D4D4D;
+}
+
+.rhap_progress-filled {
+  background-color: white;
+}
+
+.rhap_progress-indicator {
+  width: 15px;
+  height: 15px;
+  top: -5px;
+}
+
+.rhap_main-controls-button {
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  height: fit-content;
+}
