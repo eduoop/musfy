@@ -10,7 +10,6 @@ import { Sheet, SheetTrigger } from "./ui/sheet";
 import SideMenu from "./side-menu";
 import Link from "next/link";
 import useCurrentSoundUrl from "../_hooks/useCurrentSoundUrl";
-import MusicPlayer from "./player";
 
 const Header = () => {
   const [sheetIsOpen, setSheetIsOpen] = useState(false);
@@ -23,8 +22,6 @@ const Header = () => {
             <Image src="/logo.png" alt="Musfy" height={65} width={65} />
           </Link>
          
-         <MusicPlayer/>
-
           <Sheet open={sheetIsOpen} onOpenChange={setSheetIsOpen}>
             <SheetTrigger asChild>
               <Button variant={"outline"} size={"icon"} className="h-9 w-9">

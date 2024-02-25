@@ -3,9 +3,7 @@
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import {
-  PauseCircle,
   PauseIcon,
-  PlayCircle,
   PlayIcon,
   SkipBack,
   SkipForward,
@@ -18,7 +16,7 @@ const MusicPlayer = () => {
 
   return (
     currentSongUrl && (
-      <div className="w-screen fixed bottom-0 left-0 z-50 flex items-center justify-center bg-black py-2">
+      <div className="w-screen fixed bottom-0 left-0 z-50 flex items-center justify-center bg-black py-1">
         <AudioPlayer
           autoPlay
           src={currentSongUrl}
