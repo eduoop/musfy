@@ -37,7 +37,7 @@ const MusicHorizonCard = ({ music }: MusicHorizonCardProps) => {
     <Card onClick={handleNewSong} className="w-full flex items-center justify-between cursor-pointer rounded-tl-2xl rounded-bl-2xl duration-300 hover:bg-secondary">
       <CardContent className="flex items-center justify-between p-0 w-full">
         <div className="flex items-center gap-2">
-          <div className="relative h-[70px] w-[70px]">
+          <div className="relative h-[70px] min-w-[70px] max-w-[70px]">
             <Image
               alt="Barber image"
               src={music.imageUrl}
@@ -50,8 +50,8 @@ const MusicHorizonCard = ({ music }: MusicHorizonCardProps) => {
             />
           </div>
 
-          <div>
-            <h1 className="leading-[19px] font-semibold overflow-hidden text-ellipsis text-nowrap">
+          <div className="w-[90%]">
+            <h1 className="leading-[19px] font-semibold overflow-hidden text-ellipsis line-clamp-1 ">
               {music.title}
             </h1>
             <small className="leading-[12px]">
@@ -60,13 +60,13 @@ const MusicHorizonCard = ({ music }: MusicHorizonCardProps) => {
           </div>
         </div>
 
-        <div className="pr-4 flex items-center">
+        <div className="pr-2 flex items-center">
           {isCurrentSongAndIsPlaying(music.url) ? (
-              <Button onClick={handlePlayClick} variant={"secondary"}>
+              <Button className="px-2" onClick={handlePlayClick} variant={"secondary"}>
                 <PauseIcon className="fill-white" size={19} />
               </Button>
             ) : (
-              <Button onClick={() => toggleIsPlaying(music.url)} variant={"secondary"}>
+              <Button className="px-2" onClick={() => toggleIsPlaying(music.url)} variant={"secondary"}>
                 <PlayIcon className="fill-white" size={19} />
               </Button>
             )}
