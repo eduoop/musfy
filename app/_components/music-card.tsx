@@ -22,7 +22,7 @@ const MusicCard = ({ music }: MusicCardProps) => {
   const { toggleIsPlaying } = useGlobalCurrentSoundContext();
 
   const handleNewSong = () => {
-    updateCurrentSoundUrl(music.url);
+    updateCurrentSoundUrl(music);
   };
 
   const titleStyle = isCurrentSong(music.url)

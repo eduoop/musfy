@@ -1,10 +1,11 @@
 "use client";
 
+import { Music } from "@prisma/client";
 import { createContext, useContext, useRef, useState } from "react";
 
 interface CurrentSoundUrlProps {
-  currentSongUrl: string;
-  setCurrentSongUrl: React.Dispatch<React.SetStateAction<string>>;
+  currentSong: Music | undefined;
+  setCurrentSong: React.Dispatch<React.SetStateAction<Music | undefined>>;
   isPlaying: boolean;
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
   playerRef: any;
@@ -18,12 +19,12 @@ export const CurrentSoundContextProvider = ({
 }: {
   children: any;
 }) => {
-  const [currentSongUrl, setCurrentSongUrl] = useState("");
+  const [currentSong, setCurrentSong] = useState<Music>();
   const [isPlaying, setIsPlaying] = useState(false);
   const playerRef = useRef<any>();
 
   const toggleIsPlaying = (currentClickSongUrl: string) => {
-    if (playerRef.current && currentClickSongUrl === currentSongUrl) {
+    if (playerRef.current && currentClickSongUrl === currentSong?.url) {
       if (isPlaying) {
         setIsPlaying(false);
         playerRef.current.audio.current.pause();
@@ -37,8 +38,8 @@ export const CurrentSoundContextProvider = ({
   return (
     <GlobalContext.Provider
       value={{
-        currentSongUrl,
-        setCurrentSongUrl,
+        currentSong,
+        setCurrentSong,
         isPlaying,
         setIsPlaying,
         playerRef,

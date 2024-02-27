@@ -22,12 +22,12 @@ const MusicHorizonCard = ({ music }: MusicHorizonCardProps) => {
   const { toggleIsPlaying } = useGlobalCurrentSoundContext();
 
   const handleNewSong = () => {
-    updateCurrentSoundUrl(music.url);
+    updateCurrentSoundUrl(music);
   };
 
   const handlePlayClick = () => {
     if(!isCurrentSong(music.url)){
-      updateCurrentSoundUrl(music.url);
+      updateCurrentSoundUrl(music);
     }
 
     toggleIsPlaying(music.url);
