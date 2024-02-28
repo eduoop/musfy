@@ -1,7 +1,14 @@
 "use client";
 
 import { Music } from "@prisma/client";
-import { createContext, useContext, useRef, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  Component,
+} from "react";
 
 interface CurrentSoundUrlProps {
   currentSong: Music | undefined;
@@ -9,7 +16,7 @@ interface CurrentSoundUrlProps {
   isPlaying: boolean;
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
   playerRef: any;
-  toggleIsPlaying: (currentClickSongUrl: string) => void
+  toggleIsPlaying: (currentClickSongUrl: string) => void;
 }
 
 const GlobalContext = createContext<CurrentSoundUrlProps>(null!);
@@ -34,6 +41,47 @@ export const CurrentSoundContextProvider = ({
       }
     }
   };
+
+  // Salvar tempo e musica antes da página sera fechada, e recuperar valores ao ser reaberta
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      localStorage.setItem(
+        "currentSongTime",
+        JSON.stringify(playerRef.current.audio.current.currentTime)
+      );
+
+      if (currentSong) {
+        localStorage.setItem("currentSong", JSON.stringify(currentSong));
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [currentSong]);
+
+  // Resgatar musica que o usuário estava escutando
+  useEffect(() => {
+    const storedSong = localStorage.getItem("currentSong");
+
+    if (storedSong) {
+      try {
+        setCurrentSong(JSON.parse(storedSong));
+      } catch (error) {
+        console.error("Error parsing stored song:", error);
+      }
+    }
+  }, []);
+
+  // 
+  useEffect(() => {
+    if(isPlaying){
+      localStorage.removeItem("currentSongTime");
+    }
+  }, [isPlaying])
 
   return (
     <GlobalContext.Provider

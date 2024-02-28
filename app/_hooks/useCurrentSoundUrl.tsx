@@ -6,6 +6,7 @@ const useCurrentSoundUrl = () => {
 
   const updateCurrentSoundUrl = (newSong?: Music) => {
     if (newSong && newSong.url !== currentSong?.url) {
+      localStorage.removeItem("currentSongTime");
       setCurrentSong(newSong);
       setIsPlaying(true)
     }

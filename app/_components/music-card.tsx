@@ -37,7 +37,7 @@ const MusicCard = ({ music }: MusicCardProps) => {
     <div onClick={handleNewSong} className={cardStyle}>
       <div className="relative w-full h-[140px]">
         <Image
-          alt="Barber image"
+          alt="Music Image"
           src={music.imageUrl}
           fill
           sizes="100vw"
