@@ -53,12 +53,12 @@ const MusicPlayer = () => {
     if (storedSongTime && playerRef.current) {
       try {
         playerRef.current.audio.current.currentTime = storedSongTime;
-        refersh()
+        refersh();
       } catch (error) {
         console.error("Error parsing stored song time:", error);
       }
     }
-  }, [playerRef.current, refersh]);
+  }, [playerRef, refersh]);
 
   return (
     currentSong && (
