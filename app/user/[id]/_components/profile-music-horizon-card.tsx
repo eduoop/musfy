@@ -39,7 +39,7 @@ const ProfileMusicHorizonHard = ({ music, user }: ProfileMusicHorizonHard) => {
         <div className="flex items-center gap-2">
           <div className="relative h-[70px] min-w-[70px] max-w-[70px]">
             <Image
-              alt="Barber image"
+              alt="Sound image"
               src={music.imageUrl}
               fill
               sizes="100vw"

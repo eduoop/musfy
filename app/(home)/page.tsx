@@ -14,8 +14,8 @@ export default async function Home() {
         },
       },
       include: {
-        user: true
-      }
+        user: true,
+      },
     }),
 
     db.music.findMany({
@@ -25,15 +25,19 @@ export default async function Home() {
         },
       },
       include: {
-        user: true
-      }
+        user: true,
+      },
     }),
   ]);
 
   return (
     <div className="min-h-screen">
       <div className="px-5 my-6">
-        <Search />
+        <Search
+          defaultValues={{
+            search: "",
+          }}
+        />
       </div>
 
       <h1 className="px-5 mb-3 text-xl font-semibold">Descobrir</h1>
