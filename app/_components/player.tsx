@@ -95,6 +95,7 @@ const MusicPlayer = () => {
               isFullScreen={isFullScreen}
               toggleFullScreen={toggleFullScreen}
               key={"isFullScreen"}
+              musicUrl={currentSong.url}
             />
           </div>
 

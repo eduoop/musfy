@@ -1,24 +1,32 @@
 "use client";
-import { Maximize2, PlayIcon } from "lucide-react";
+import { Maximize2, PauseIcon, PlayIcon } from "lucide-react";
 import { useGlobalCurrentSoundContext } from "../_contexts/CurrentSoundContext";
 import React, { useEffect, useState, useRef } from "react";
 import { FastAverageColor } from "fast-average-color";
 import Image from "next/image";
 import { animated, useSpring } from "@react-spring/web";
 import MusicPlayer from "./player";
+import { Button } from "./ui/button";
+import useCurrentSoundUrl from "../_hooks/useCurrentSoundUrl";
 interface FullScreenMusicProps {
   isFullScreen: boolean;
   toggleFullScreen: () => void;
+  musicUrl: string;
 }
 
 const FullScreenMusic = ({
   isFullScreen,
   toggleFullScreen,
+  musicUrl,
 }: FullScreenMusicProps) => {
-  const { currentSong, toggleIsPlaying, playerRef } = useGlobalCurrentSoundContext();
+  const { currentSong, toggleIsPlaying, playerRef } =
+    useGlobalCurrentSoundContext();
   const [dominantColor, setDominantColor] = useState("#000000");
   const [secondaryColor, setSecondaryColor] = useState("#000000");
+  const [isUserActive, setIsUserActive] = useState(true);
   const fac = new FastAverageColor();
+  const { updateCurrentSoundUrl, isCurrentSongAndIsPlaying, isCurrentSong } =
+    useCurrentSoundUrl();
 
   const [springsImage, apiImage] = useSpring(() => ({
     from: { x: -100 },
@@ -85,6 +93,25 @@ const FullScreenMusic = ({
     }
   }, [apiImage, apiText, isFullScreen]);
 
+  useEffect(() => {
+    let timer: any;
+    const setInactive = () => {
+      setIsUserActive(false);
+    };
+
+    document.addEventListener('mousemove', () => {
+      setIsUserActive(true);
+      clearTimeout(timer);
+      timer = setTimeout(setInactive, 3000); // 3000 milissegundos = 3 segundos
+    });
+
+    return () => {
+      document.removeEventListener('mousemove', () => {
+        clearTimeout(timer);
+      });
+    };
+  }, []);
+
   return (
     <div id="full-screen-music">
       {!isFullScreen ? (
@@ -95,7 +122,6 @@ const FullScreenMusic = ({
             className="cursor-pointer"
             size={20}
           />
-
         </>
       ) : (
         <div className="h-full relative">
@@ -131,12 +157,37 @@ const FullScreenMusic = ({
                     ...springsText,
                   }}
                 >
-                  <h1 className="text-5xl font-semibold mb-2">
-                    {currentSong!.title}
-                  </h1>
-                  <small className="font-semibold text-lg">
-                    {currentSong!.author ? currentSong!.author : "Anônimo"}
-                  </small>
+                  {isCurrentSong(musicUrl) &&
+                    (isCurrentSongAndIsPlaying(musicUrl) ? (
+                      <Button
+                        onClick={() => toggleIsPlaying(musicUrl)}
+                        className={`rounded-full bg-transparent cursor-pointer p-0 hover:bg-transparent duration-300 opacity-${isUserActive ? "100" : "0"}`}
+                      >
+                        <PauseIcon
+                          className="text-white fill-white"
+                          size={50}
+                        />
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={() => toggleIsPlaying(musicUrl)}
+                        className={`rounded-full bg-transparent cursor-pointer p-0 hover:bg-transparent duration-1000 opacity-${isUserActive ? "100" : "0"}`}
+                      >
+                        <PlayIcon
+                          className="text-white ml-[3px] fill-white"
+                          size={50}
+                        />
+                      </Button>
+                    ))}
+                    
+                  <div>
+                    <h1 className="text-5xl font-bold mb-2 mt-5">
+                      {currentSong!.title}
+                    </h1>
+                    <small className="font-semibold text-lg">
+                      {currentSong!.author ? currentSong!.author : "Anônimo"}
+                    </small>
+                  </div>
                 </animated.div>
               </div>
 

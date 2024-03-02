@@ -43,7 +43,6 @@ export const CurrentSoundContextProvider = ({
   };
 
   // Salvar tempo e musica antes da página sera fechada, e recuperar valores ao ser reaberta
-
   useEffect(() => {
     const handleBeforeUnload = () => {
       localStorage.setItem(
