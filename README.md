@@ -89,6 +89,40 @@ para rodar o projeto, use: <npm run dev>
 <https://musfy.vercel.app/>
 ```
 
+## Tecnologias Utilizadas
+- **Next.js** (v14.1.0)
+- **Prisma** (v5.10.2)
+- **AWS SDK** (v2.1565.0)
+- **React** (v18)
+- **Tailwind CSS** (v3.3.0)
+- **TypeScript** (v5)
+
+## Bibliotecas e Frameworks
+- **@auth/prisma-adapter** (v1.4.0)
+- **@aws-sdk/client-s3** (v3.521.0)
+- **@hookform/resolvers** (v3.3.4)
+- **@prisma/client** (v5.10.2)
+- **@radix-ui/react-avatar** (v1.0.4)
+- **@radix-ui/react-dialog** (v1.0.5)
+- **@radix-ui/react-label** (v2.0.2)
+- **@radix-ui/react-separator** (v1.0.3)
+- **@radix-ui/react-slot** (v1.0.2)
+- **@radix-ui/react-toast** (v1.1.5)
+- **@react-spring/web** (v9.7.3)
+- **aws-sdk** (v2.1565.0)
+- **class-variance-authority** (v0.7.0)
+- **clsx** (v2.1.0)
+- **fast-average-color** (v9.4.0)
+- **lucide-react** (v0..335..0)
+- **next-auth** (v4..24..6)
+- **react-h5-audio-player** (v3..9..1)
+- **react-hook-form** (v7..50..1)
+- **react-media-recorder** (v1..6..6)
+- **tailwind-merge** (v2..2..1)
+- **tailwindcss-animate** (v1..0..7)
+- **ts-node** (v10..9..2)
+- **zod** (v3..22..4)
+
 ## 🤝 Criador
 
 Feito Por:
