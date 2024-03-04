@@ -6,6 +6,7 @@ import Header from "./_components/header";
 import { Toaster } from "./_components/ui/toaster";
 import { CurrentSoundContextProvider } from "./_contexts/CurrentSoundContext";
 import MusicPlayer from "./_components/player";
+import CurrentSongTheme from "./_components/current-sound-theme";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,7 +26,7 @@ export default function RootLayout({
         <AuthProvider>
           <CurrentSoundContextProvider>
             <Header />
-            <div className="pb-32">{children}</div>
+            <CurrentSongTheme>{children}</CurrentSongTheme>
             <MusicPlayer />
             <Toaster />
           </CurrentSoundContextProvider>
