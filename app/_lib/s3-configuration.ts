@@ -30,13 +30,13 @@ const uploadFileToS3 = async (file: any) => {
     // Construa a URL do objeto enviado
     const objectUrl = `https://${putParams.Bucket}.s3.sa-east-1.amazonaws.com/${encodeURIComponent(keyWithPath)}`;
     
-    console.log("Arquivo enviado com sucesso:", objectUrl);
     return objectUrl;
   } catch (error) {
     console.error("Erro ao enviar arquivo para o S3:", error);
     throw error;
   }
 };
+
 
 // Função para obter a extensão do arquivo
 const getFileExtension = (filename: string) => {
@@ -53,7 +53,6 @@ const deleteFileFromS3 = async (fileName: string) => {
     const command = new DeleteObjectCommand(params);
     await s3Client.send(command);
     
-    console.log('Arquivo deletado com sucesso:', fileName);
   } catch (error) {
     console.error('Erro ao deletar arquivo do S3:', error);
     throw error;
@@ -80,7 +79,6 @@ async function uploadImageToS3(file: any) {
     // Construa a URL do objeto enviado
     const objectUrl = `https://${putParams.Bucket}.s3.sa-east-1.amazonaws.com/${keyWithPath}`;
     
-    console.log("Arquivo enviado com sucesso:", objectUrl);
     return objectUrl;
   } catch (error) {
     console.error("Erro ao enviar arquivo para o S3:", error);

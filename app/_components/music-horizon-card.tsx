@@ -55,7 +55,7 @@ const MusicHorizonCard = ({ music }: MusicHorizonCardProps) => {
               {music.title}
             </h1>
             <small className="leading-[12px]">
-              {music.author ? music.author : music.user.name}
+              {music.author ? music.author : "Anonimo"}
             </small>
           </div>
         </div>

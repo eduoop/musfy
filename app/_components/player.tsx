@@ -24,7 +24,6 @@ const MusicPlayer = () => {
     const element = document.getElementById("full-screen-music");
     const handleFullScreenChange = () => {
       setIsFullScreen((prevState) => {
-        console.log(prevState);
         return !(document.fullscreenElement === element); // Verifica se o elemento está em fullscreen
       });
     };

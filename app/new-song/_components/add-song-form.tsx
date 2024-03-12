@@ -83,6 +83,8 @@ const AddSongForm = ({ defaultValues }: FormProps) => {
    
     if (data && selectedImage && selectedFile) {  
       setLoadingSave(true);
+
+      console.log(selectedFile)
       try {
         await AddSong({
           file: formData,

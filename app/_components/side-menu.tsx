@@ -3,6 +3,7 @@
 import React from "react";
 import {
   CalendarIcon,
+  DownloadCloud,
   HomeIcon,
   LogInIcon,
   LogOutIcon,
@@ -107,6 +108,20 @@ const SideMenu = ({ setSheetIsOpen }: SideMenuProps) => {
               <Link href="/new-song">
                 <PlusIcon size={18} className="mr-2" />
                 Nova Música
+              </Link>
+            </Button>
+          )}
+
+          {data && data.user && (
+            <Button
+              onClick={() => setSheetIsOpen(false)}
+              asChild
+              variant={"outline"}
+              className="justify-start"
+            >
+              <Link href="/import-song">
+                <DownloadCloud size={18} className="mr-2" />
+                Importar Musica
               </Link>
             </Button>
           )}

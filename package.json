@@ -29,9 +29,12 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "fast-average-color": "^9.4.0",
+    "js-video-url-parser": "^0.5.1",
     "lucide-react": "^0.335.0",
+    "music-metadata": "^7.14.0",
     "next": "14.1.0",
     "next-auth": "^4.24.6",
+    "node-fetch": "^3.3.2",
     "react": "^18",
     "react-dom": "^18",
     "react-h5-audio-player": "^3.9.1",
@@ -40,6 +43,7 @@
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "ts-node": "^10.9.2",
+    "youtube-mp3-downloader": "^0.7.11",
     "zod": "^3.22.4"
   },
   "devDependencies": {

@@ -2,6 +2,7 @@
 import { db } from "@/app/_lib/prisma";
 import { uploadFileToS3, uploadImageToS3 } from "../../_lib/s3-configuration";
 import { revalidatePath } from "next/cache";
+
 interface AddSongProps {
   file: {
     title: string;
@@ -38,8 +39,6 @@ export const AddSong = async ({ file, userId, songFile, songImage }: AddSongProp
       data: songImage,
       title: file.title,
     })
-
-    console.log(fileImageUrl)
 
     await db.music.create({
       data: {
