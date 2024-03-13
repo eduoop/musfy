@@ -15,7 +15,7 @@ const CurrentSongTheme = ({ children }: { children: React.ReactNode }) => {
   function applyOpacityToHexColor(hex: string, opacity: number): string {
     // Convert opacity to a value between 0 and 1
     const normalizedOpacity = Math.min(1, Math.max(0, opacity / 100));
-    
+
     // Extract RGB values from the hex color
     const r = parseInt(hex.substring(1, 3), 16);
     const g = parseInt(hex.substring(3, 5), 16);
@@ -23,18 +23,19 @@ const CurrentSongTheme = ({ children }: { children: React.ReactNode }) => {
 
     // Return the color with the specified opacity
     return `rgba(${r}, ${g}, ${b}, ${normalizedOpacity})`;
-}
+  }
 
   return (
     <div
       style={{
-        paddingBottom: "8rem",
         background:
           currentSong &&
-          `linear-gradient(to bottom, ${applyOpacityToHexColor(dominantColor, 15)}, transparent)`,
-        backgroundSize: "cover",
+          `linear-gradient(to bottom, ${applyOpacityToHexColor(
+            dominantColor,
+            15
+          )}, transparent)`,
         minHeight: "100%",
-        backgroundBlendMode: "screen"
+        backgroundBlendMode: "screen",
       }}
       className="relative"
     >

@@ -36,7 +36,7 @@ interface importSoundProps {
   defaultValues: z.infer<typeof importSoundSchema>;
 }
 
-const ImportSound = ({ defaultValues }: importSoundProps) => {
+const ImportSound = ({ defaultValues }: importSoundProps = {defaultValues: {url: ""}}) => {
   const [videoIdPreview, setVideoIdPreview] = useState("");
   const { data } = useSession();
   const [loadingSave, setLoadingSave] = useState(false);

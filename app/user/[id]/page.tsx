@@ -37,11 +37,12 @@ const User = async ({ params }: UserProps) => {
           <h1 className="px-5 mb-3 text-xl font-semibold mt-6">Musicas:</h1>
 
           <div className="px-5 flex flex-col gap-3">
-            {user.musics.map((music) => (
+            {user.musics.map((music, index) => (
               <ProfileMusicHorizonHard
                 user={user}
                 key={music.id}
                 music={music}
+                isLast={index === user.musics.slice().length - 1}
               />
             ))}
           </div>

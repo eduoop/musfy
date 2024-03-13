@@ -53,8 +53,9 @@ export default async function Home() {
       </h1>
 
       <div className="px-5 flex flex-col gap-3">
-        {recentSounds.map((music) => (
-          <MusicHorizonCard key={music.id} music={music} />
+        {recentSounds.map((music, index) => (
+          <MusicHorizonCard key={music.id} music={music} isLast={index === recentSounds.slice().length - 1}
+          />
         ))}
       </div>
     </div>
