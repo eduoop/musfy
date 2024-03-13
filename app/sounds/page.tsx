@@ -41,8 +41,8 @@ const Sounds = async ({ searchParams }: SoundsPageProps) => {
       </h1>
 
       <div className="px-5 flex flex-col gap-3">
-        {sounds.map((music) => (
-          <MusicHorizonCard key={music.id} music={music} />
+        {sounds.map((music, index) => (
+          <MusicHorizonCard key={music.id} music={music} isLast={index === sounds.slice().length - 1}/>
         ))}
       </div>
     </div>
