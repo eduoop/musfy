@@ -17,6 +17,7 @@ import { Button } from "../_components/ui/button";
 import { Eye, Loader2, SaveIcon } from "lucide-react";
 import { useToast } from "../_components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import { PageProps } from "@/.next/types/app/layout";
 
 const importSoundSchema = z.object({
   url: z.string().refine(
@@ -32,11 +33,11 @@ const importSoundSchema = z.object({
   ),
 });
 
-interface importSoundProps {
+interface ImportSoundProps extends PageProps {
   defaultValues: z.infer<typeof importSoundSchema>;
 }
 
-const ImportSound = ({ defaultValues }: importSoundProps = {defaultValues: {url: ""}}) => {
+const ImportSound = ({ defaultValues }: ImportSoundProps = {defaultValues: {url: ""}}) => {
   const [videoIdPreview, setVideoIdPreview] = useState("");
   const { data } = useSession();
   const [loadingSave, setLoadingSave] = useState(false);
