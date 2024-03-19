@@ -30,7 +30,7 @@ export const downloadSong = async (songUrl: string, userId: string) => {
     const match = url.match(videoIdRegex);
 
     return match ? match[1] : "";
-  }
+  };
 
   const url = new URL("https://youtube-mp36.p.rapidapi.com/dl");
   url.searchParams.append("id", extractYouTubeVideoId(songUrl));
