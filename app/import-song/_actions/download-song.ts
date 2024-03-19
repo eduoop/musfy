@@ -19,8 +19,8 @@ export const downloadSong = async (songUrl: string, userId: string) => {
   const options = {
     method: "GET",
     headers: {
-      "X-RapidAPI-Key": process.env.API_KEY ?? "",
-      "X-RapidAPI-Host": process.env.API_HOST ?? "",
+      "X-RapidAPI-Key": process.env.API_KEY ?? "5a1e05dab3msh2bf9157a53c123dp176981jsn22a4ab455003",
+      "X-RapidAPI-Host": process.env.API_HOST ?? "youtube-mp36.p.rapidapi.com",
     },
   };
 
