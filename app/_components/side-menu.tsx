@@ -112,7 +112,7 @@ const SideMenu = ({ setSheetIsOpen }: SideMenuProps) => {
             </Button>
           )}
 
-          {data && data.user && (
+          {/* {data && data.user && (
             <Button
               onClick={() => setSheetIsOpen(false)}
               asChild
@@ -124,7 +124,7 @@ const SideMenu = ({ setSheetIsOpen }: SideMenuProps) => {
                 Importar Musica
               </Link>
             </Button>
-          )}
+          )} */}
         </div>
       </SheetContent>
     </>
